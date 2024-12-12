@@ -47,7 +47,7 @@
 
 </template>
 <script setup lang="ts">
-import {markRaw, onMounted, ref, getCurrentInstance, reactive, onBeforeMount} from "vue";
+import {markRaw, onMounted, reactive, ref} from "vue";
 import 'animate.css';
 import navContext from "./Navbar.ts";
 

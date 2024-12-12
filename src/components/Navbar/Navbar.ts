@@ -1,5 +1,4 @@
-import type {DefineComponent, ShallowRef} from "vue";
-import {reactive, shallowRef} from "vue";
+import {reactive} from "vue";
 import {DocumentFolder, Home, IcecreamTwo} from "@icon-park/svg";
 
 interface navItem {
