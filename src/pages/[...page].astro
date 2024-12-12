@@ -1,0 +1,32 @@
+---
+import {getCollection} from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import MainLayout from '../layouts/MainLayout.astro';
+import type { GetStaticPathsOptions, Page,  } from 'astro';
+import HomePage from "../pages/home/index.astro";
+
+
+export async function getStaticPaths(options: GetStaticPathsOptions) {
+    const { paginate } = options;
+    const posts = await getCollection('blog')
+    return paginate(posts, { pageSize: 2 });
+}
+
+export interface Props {
+    page: {
+     data: CollectionEntry<"blog">[];
+     start: number;
+     end: number;
+     size: number;
+     total: number;
+     currentPage: number;
+     lastPage: number;
+     url: { current: string; next?: string; prev?: string };
+    };
+}
+
+const { page } = Astro.props;
+---
+ <HomePage pagination={page}  >
+
+ </HomePage>

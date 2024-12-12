@@ -1,0 +1,26 @@
+---
+import Navbar from '../components/Navbar/Navbar.vue';
+import {SITE_DESCRIPTION, SITE_TITLE} from "../consts";
+import BaseHead from "../components/BaseHead.astro";
+
+let {bodyClass} = Astro.props;
+bodyClass = bodyClass==undefined?'max-w-screen-lg':bodyClass.toString()
+
+
+---
+
+<!doctype html>
+<html lang="cn">
+<head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION}/>
+</head>
+
+<body >
+<Navbar client:only="vue"/>
+<main class:list={[bodyClass]} >
+    <slot /> <!-- Where the pages are injected -->
+</main>
+
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import BaseHead from "../../components/BaseHead.astro";
+import bangumi_data from "../../assets/data/bangumi_data";
+import Bangumi_card from "../../components/BangumiCard.astro";
+
+
+
+let bangumiData = bangumi_data;
+---
+<html  lang="cn">
+
+<div style="display: none" id="splash-screen">
+</div>
+<div class="absolute w-full" style="top:0;z-index: -1">
+    <div  class="mask-wave w-full"></div>
+    <div class="absolute w-full" style="" id="mask-wave"></div>
+</div>
+<MainLayout bodyClass="max-w-screen-2xl">
+
+    <div class="main-container">
+        <div id="title" style="" class="flex justify-center header absolute">
+            <img
+                    style="margin-top: 3rem;margin-bottom: 1rem"
+                    src="/src/assets/image/title.svg"
+                    alt="logo"
+                    class="md:w-1/3"
+            />
+        </div>
+          <div class=" w-full mt-4 me-4">
+              <div class="flex flex-grow flex-wrap grow-0 justify-center">
+                  {
+                      bangumiData.map(bangumi => (
+                              <Bangumi_card bangumiData={bangumi} />
+                      ))
+                  }
+              </div>
+          </div>
+    </div>
+
+
+</MainLayout>
+
+<style>
+
+    #splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #FFF0F5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+    }
+
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    .header {
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        animation: fadeIn 1s ease; /* 添加 fadeIn 动画效果 */
+    }
+
+
+    .header h1 {
+        color: var(--text-color);
+        font-size: 2.5em; /* 增大标题字号 */
+        text-shadow: 2px 2px 4px rgba(243, 230, 179, 0.5); /* 添加文字阴影，增加深度 */
+        margin: 0.5em 0; /* 调整间距 */
+    }
+
+    .header p {
+        font-size: 1.2em; /* 调整段落文字大小 */
+        color: var(--secondary-color); /* 更亮的颜色，增加吸引力 */
+        margin-bottom: 0;
+    }
+
+    :root{
+        background: linear-gradient(90deg, #b3fffd 0, #e3e6ff 50%, #fde5f5 100%);
+        background-image: url(../../../src/assets/image/bangumi_bg1.png);
+        background-color: #ffee8e;
+        background-position: center top;
+        background-size: auto;
+
+    }
+
+    .container--bg {
+        pointer-events: none;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    .container--bg-lottie {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 0 0;
+        background-image: url(https://pjsekai.sega.jp/assets/data/webp/common/bg_lottie_pc.png.webp);
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    .container--bg-parallax {
+        width: 100%;
+        height: 150%;
+        position: absolute;
+        top: -50%;
+    }
+    .container--bg-parallax__layer {
+        background-repeat: repeat-y;
+        background-size: 100% auto;
+        background-position: center 0;
+        width: 100%;
+        height: 400%;
+        transition: transform 1.2s 0s cubic-bezier(.075, .82, .165, 1);
+        will-change: transform;
+    }
+
+    .container--bg-parallax.layer-3 .container--bg-parallax__layer {
+        background-image: url(https://pjsekai.sega.jp/assets/data/webp/common/bg_parallax03_pc.png.webp);
+    }
+    .container--bg-parallax.layer-2 .container--bg-parallax__layer {
+        background-image: url(https://pjsekai.sega.jp/assets/data/webp/common/bg_parallax02_pc.png.webp);
+    }
+    .container--bg-parallax.layer-1 .container--bg-parallax__layer {
+        background-image: url(https://pjsekai.sega.jp/assets/data/webp/common/bg_parallax01_pc.png.webp);
+    }
+    .watchtime-text {
+        display: block; /* 将日期元素设置为块级元素 */
+        width: 100%; /* 设置宽度为100% */
+        text-align: center; /* 文本居中 */
+        font-size: 1.5rem; /* 调整字体大小 */
+        color: var(--text-color); /* 设置字体颜色为粉红色，你可以根据需要修改 */
+        margin: 10px auto; /* 设置外边距以居中元素 */
+    }
+    .mask-wave{
+        height: 90px;
+        top: 0;
+        z-index: -1;
+        background-color: #ffd8da;
+    }
+    #mask-wave{
+        height: 50px;
+        top:57px;
+        mask-image: url(../../../src/assets/image/mask_wave_top.png);
+        background-color: #ffee8e;
+    }
+
+
+</style>
+</html>

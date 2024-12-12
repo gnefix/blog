@@ -1,0 +1,43 @@
+---
+// Import the global.css file here so that it is included on
+// all pages through the use of the <BaseHead /> component.
+import '../styles/global.css';
+import { ViewTransitions } from "astro:transitions";
+import { fade } from 'astro:transitions';
+
+interface Props {
+	title: string;
+	description: string;
+	image?: string;
+}
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+---
+<script>
+    let theme = window.localStorage.getItem('theme');
+    if(theme ==='dark'){
+        window.localStorage.setItem('theme','dark');
+        document.documentElement.dataset.theme='sunset'
+    }else if(theme === 'light'){
+        window.localStorage.setItem('theme','light');
+        document.documentElement.dataset.theme='wireframe'
+    }else {
+        window.localStorage.setItem('theme','light');
+        document.documentElement.dataset.theme='wireframe'
+    }
+</script>
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Font preloads -->
+<ViewTransitions />
+<div transition:animate={fade({ duration: '0.2s' })} />
+
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />

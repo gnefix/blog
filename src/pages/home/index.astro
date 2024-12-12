@@ -1,0 +1,53 @@
+---
+import {getCollection} from "astro:content";
+import MainLayout from "../../layouts/MainLayout.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import { Image } from 'astro:assets';
+let {pagination} = Astro.props;
+import {type Post} from "../../content/config"
+---
+
+<!doctype html>
+<html lang="cn">
+<MainLayout  bodyClass="w-11/12 md:w-2/3 max-w-xl" >
+   <div class="mt-12 ">
+      <main>
+         <section>
+            <ul>
+               {
+                  pagination.data.map((post:Post) => (
+                      <div class=" card bg-base-100 shadow-2xl mb-12 transition hover:scale-105">
+                         <a class="card-body p-0" href={`/posts/${post.slug}/`}>
+                            {post.data.banner? <div class="w-auto h-24" style=`border-radius:var(--rounded-box, 1rem) var(--rounded-box, 1rem) 0 0;background-image: url(${post.data.banner});background-size: cover;background-position: center center`></div>
+                            :null}
+                            <div class="card card-side bg-base-100 ">
+                               <div class="card-body">
+                                  <p class="card-title text-lg font-normal leading-5 text-base-content hover:text-[oklch(var(--p))]">{post.data.title}</p>
+                                  <p class="text-base-content text-base">{post.data.description}</p>
+                                  <div class="text-base text-base-content">
+                                     <FormattedDate date={post.data.lastUpdated}></FormattedDate>
+                                  </div>
+                               </div>
+                            </div>
+                         </a>
+                      </div>
+                  ))
+               }
+            </ul>
+         </section>
+         <div class="flex flex-col items-center my-12">
+            <div style="justify-content: space-around" class="w-full flex justify-between text-gray-700">
+               {
+                   !!pagination.url.prev && ( <a href={pagination.url.prev} class=" btn btn-outline"><?xml version="1.0" encoding="UTF-8"?><svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="bevel"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="bevel"/></svg></a> )
+               }
+               {
+                   !!pagination.url.next && (<a href={pagination.url.next} class=" btn btn-outline"><?xml version="1.0" encoding="UTF-8"?><svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41.9999 24H5.99994" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="bevel"/><path d="M30 12L42 24L30 36" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="bevel"/></svg></a>)
+               }
+            </div>
+         </div>
+
+      </main>
+   </div>
+</MainLayout>
+
+</html>
