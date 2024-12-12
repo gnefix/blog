@@ -1,0 +1,41 @@
+---
+import {getCollection} from "astro:content";
+import MainLayout from "../layouts/MainLayout.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import {type Post} from "../content/config"
+
+
+const posts = await getCollection('blog');
+
+---
+
+<html>
+<MainLayout  bodyClass="w-11/12 md:w-2/3 max-w-3xl" >
+
+
+    <div class="mt-12">
+        <main>
+            <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical ">
+                {posts.map((post:any)=>{
+                    return (  <li>
+                        <div class="timeline-middle ">
+                            <?xml version="1.0" encoding="UTF-8"?><svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 33C28.9706 33 33 28.9706 33 24C33 19.0294 28.9706 15 24 15C19.0294 15 15 19.0294 15 24C15 28.9706 19.0294 33 24 33Z" fill="#333" stroke="#333" stroke-width="4"/></svg>
+                        </div>
+                        <div class="timeline-start mb-10 md:text-end">
+                            <time class="font-mono italic "><FormattedDate date={post.data.lastUpdated}></FormattedDate></time>
+                            <div class="mt-3">
+                                <a href={`/posts/${post.slug}/`} >
+                                    <p class="font-normal leading-5 text-base-content hover:text-[oklch(var(--p))]">{post.data.title}</p>
+                                </a>
+                                {post.data.description}
+                            </div>
+                        </div>
+                        <hr class="bg-base-content" />
+                    </li>)
+                })}
+            </ul>
+        </main>
+    </div>
+</MainLayout>
+
+</html>
