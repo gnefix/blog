@@ -1,11 +1,11 @@
 ---
-import {getFilenamesInDirectory} from '../assets/js/utils'
+import {getFilenamesInDirectory} from '../../public/js/utils'
 import {Star} from "@icon-park/svg"
-import {type Bangumi} from '../assets/data/bangumi_data.ts'
+import {type Bangumi} from '../../public/data/bangumi_data.ts'
 
 
 let {bangumiData} = Astro.props
-let imagesPath  = './src/assets/image/' + bangumiData.name
+let imagesPath  = './public/images/' + bangumiData.name
 let image_files = getFilenamesInDirectory(imagesPath)
 
 let cardImage
@@ -44,7 +44,7 @@ function get_badge_and_color(status:number){
 }
 ---
 
-<a  href={'/bangumi/'+bangumiData.name}  style="transition-duration:500ms"
+<a  href={'/bangumi/'+bangumiData.name} data-astro-reload  style="transition-duration:500ms"
     class="mt-0 pt-0 p-6 bangumi_card rounded-sm m-3 card-hover min-w-88 max-h-max md:w-2/3 card md:m-10">
     <div >
 
@@ -85,7 +85,7 @@ function get_badge_and_color(status:number){
         padding: var(--padding-card, 1rem);
     }
     .bangumi_card{
-        border-image-source: url(../../src/assets/image/bangumi_border.png);
+        border-image-source: url(../../public/images/bangumi_border.png);
         border-image-slice: 80 80 fill;
         border-image-width: 52px 50px;
         border-image-repeat: repeat;

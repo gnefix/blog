@@ -1,11 +1,11 @@
 ---
-import bangumi_data, {type Bangumi} from "../../assets/data/bangumi_data";
+import bangumi_data, {type Bangumi} from "../../../public/data/bangumi_data";
 import MainLayout from "../../layouts/MainLayout.astro";
 import {SITE_DESCRIPTION, SITE_TITLE} from "../../consts";
 import BaseHead from "../../components/BaseHead.astro";
 import { Image } from 'astro:assets';
 import "swiper/swiper-bundle.css"
-import {gatImagesPath,getImageSize} from "../../assets/js/utils.ts";
+import {gatImagesPath,getImageSize} from "../../../public/js/utils.ts";
 
 export function getStaticPaths() {
     let data = []
@@ -17,12 +17,12 @@ export function getStaticPaths() {
 }
 const {name} = Astro.params
 let bangumi_info = bangumi_data.find((item) => item.name === name) as Bangumi
-let imagesPath = './src/assets/image/' + bangumi_info.name
+let imagesPath = './public/images/' + bangumi_info.name
 let image_files:Function[] = []
 let bangumiImages = gatImagesPath(name);
-const images = await import.meta.glob('/src/assets/image/*/*.{jpeg,jpg,png,gif,svg}')
+const images = await import.meta.glob('/public/images/*/*.{jpeg,jpg,png,gif,svg}')
 Object.entries(images).map(([filename, image]) => {
-    if (filename.includes("/src/assets/image/" + bangumi_info.name + "/")) {
+    if (filename.includes("/public/images/" + bangumi_info.name + "/")) {
         image_files.push(image)
     }
 })
@@ -47,6 +47,120 @@ let showMode =  imageSize.height! > imageSize.width! ? 1 : 0
 <html lang="cn">
 <head >
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION}/>
+    <style>
+        body{
+            background-size: 100vw;
+            background-image: url("../../../public/images/details_bg.png");
+            animation: bg_animation 600s linear infinite;
+        }
+        #main-txt{
+            transition: transform 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #info-container {
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        @keyframes bg_animation {
+            0% {
+                transform: translate3d(0, 0, 0);
+                background-position: 0% 0%;
+            }
+
+            100% {
+                transform: translate3d(0, 0, 0);
+                background-position: 0px -6000px;
+            }
+        }
+
+        .swiper-slide{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .swiper-thumbs :hover{
+            transform: scale(1.05);
+            transition:transform 0.2s;
+            opacity: 1;
+        }
+        #thumbs > .swiper-wrapper{
+            display: flex;
+            justify-content: center;
+        }
+
+        #swiper1{
+            background: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.5) 0 9px, #f4f8ff 9px 18px);
+        }
+        .swiper-slide-thumb-active > img{
+            border: 5px solid #859aba;
+            opacity: 1;
+        }
+        img[class*="swiper-thumbs"]{
+            opacity: 0.7;
+        }
+    </style>
+    <script >
+        import Swiper from "swiper/bundle";
+
+        const thumbsSwiper = new Swiper('#thumbs',{
+            spaceBetween: 10,
+            slidesPerView: 5,
+            freeMode: true,
+            watchSlidesProgress: true,
+        })
+        export const swiperConfig = {
+            // Optional parameters
+            crossFade: true,
+            effect: 'fade',
+            loop: true,
+            autoplay: {
+                delay: 5000,
+            },
+            thumbs: {
+                swiper: thumbsSwiper
+            },
+            // If we need pagination
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+
+            // Navigation arrows
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+
+            // And if we need scrollbar
+            scrollbar: {
+                el: '.swiper-scrollbar',
+            },
+        }
+        const swiper = new Swiper('#swiper1', swiperConfig)
+
+        let script
+        class AstroGreet extends HTMLElement {
+            constructor() {
+                super();
+                script = this.dataset.script;
+                import ("../../../"+script).then(module => {
+                    module.default()
+                })
+            }
+        }
+        customElements.define('astro-greet', AstroGreet);
+    </script>
 </head>
 <body class="bg-cover">
 <main id="main" data-theme="wireframe" class=" w-full bg-white bg-opacity-30 ">
@@ -112,120 +226,4 @@ let showMode =  imageSize.height! > imageSize.width! ? 1 : 0
     </div>
 </main>
 </body>
-
-<script is:inline type="module">
-    import Swiper from '../../../node_modules/swiper/swiper-bundle.mjs';
-
-    const thumbsSwiper = new Swiper('#thumbs',{
-        spaceBetween: 10,
-        slidesPerView: 5,
-        freeMode: true,
-        watchSlidesProgress: true,
-    })
-    export const swiperConfig = {
-        // Optional parameters
-        crossFade: true,
-        effect: 'fade',
-        loop: true,
-        autoplay: {
-            delay: 5000,
-        },
-        thumbs: {
-            swiper: thumbsSwiper
-        },
-        // If we need pagination
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-
-        // Navigation arrows
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-
-        // And if we need scrollbar
-        scrollbar: {
-            el: '.swiper-scrollbar',
-        },
-    }
-    const swiper = new Swiper('#swiper1', swiperConfig)
-
-    let script
-    class AstroGreet extends HTMLElement {
-        constructor() {
-            super();
-            script = this.dataset.script;
-            import ("../"+script).then(module => {
-                module.default()
-            })
-        }
-    }
-    customElements.define('astro-greet', AstroGreet);
-</script>
-
-<style>
-    body{
-        background-size: 100vw;
-        background-image: url("../../../src/assets/image/details_bg.png");
-        animation: bg_animation 600s linear infinite;
-    }
-    #main-txt{
-        transition: transform 0.5s ease-out;
-    }
-
-    @keyframes fadeInUp {
-        0% {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    #info-container {
-        animation: fadeInUp 1s ease-out both;
-    }
-
-    @keyframes bg_animation {
-        0% {
-            transform: translate3d(0, 0, 0);
-            background-position: 0% 0%;
-        }
-
-        100% {
-            transform: translate3d(0, 0, 0);
-            background-position: 0px -6000px;
-        }
-    }
-
-     .swiper-slide{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .swiper-thumbs :hover{
-        transform: scale(1.05);
-        transition:transform 0.2s;
-        opacity: 1;
-    }
-    #thumbs > .swiper-wrapper{
-        display: flex;
-        justify-content: center;
-    }
-
-    #swiper1{
-        background: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.5) 0 9px, #f4f8ff 9px 18px);
-    }
-    .swiper-slide-thumb-active > img{
-        border: 5px solid #859aba;
-        opacity: 1;
-    }
-    img[class*="swiper-thumbs"]{
-        opacity: 0.7;
-    }
-</style>
 </html>

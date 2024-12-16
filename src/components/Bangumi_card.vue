@@ -1,13 +1,13 @@
 <script setup lang="ts">
 
 import {defineProps, onMounted, reactive, ref} from 'vue'
-import {getFilenamesInDirectory} from '../assets/js/utils'
+import {getFilenamesInDirectory} from '../../public/js/utils'
 import {Star} from "@icon-park/svg"
-import {type Bangumi} from '../assets/data/bangumi_data.ts'
+import {type Bangumi} from '../../public/data/bangumi_data.ts'
 
 const props = defineProps<{bangumiData:Bangumi}>()
 let bangumiData = reactive(props.bangumiData)
-let imagesPath  = './src/assets/image/' + bangumiData.name
+let imagesPath  = './public/images/' + bangumiData.name
 let image_files = getFilenamesInDirectory(imagesPath)
 let isLoading = ref(false)
 
@@ -100,7 +100,7 @@ onMounted(()=>{
   padding: var(--padding-card, 1rem);
 }
 .bangumi_card{
-  border-image-source: url(src/assets/image/bangumi_border.png);
+  border-image-source: url(../../public/images/bangumi_border.png);
   border-image-slice: 80 80 fill;
   border-image-width: 52px 50px;
   border-image-repeat: repeat;

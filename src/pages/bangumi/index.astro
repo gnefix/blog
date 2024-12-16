@@ -1,7 +1,7 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
 import BaseHead from "../../components/BaseHead.astro";
-import bangumi_data from "../../assets/data/bangumi_data";
+import bangumi_data from "../../../public/data/bangumi_data";
 import Bangumi_card from "../../components/BangumiCard.astro";
 
 
@@ -22,7 +22,7 @@ let bangumiData = bangumi_data;
         <div id="title" style="" class="flex justify-center header absolute">
             <img
                     style="margin-top: 3rem;margin-bottom: 1rem"
-                    src="/src/assets/image/title.svg"
+                    src="/public/images/title.svg"
                     alt="logo"
                     class="md:w-1/3"
             />
@@ -85,7 +85,7 @@ let bangumiData = bangumi_data;
 
     :root{
         background: linear-gradient(90deg, #b3fffd 0, #e3e6ff 50%, #fde5f5 100%);
-        background-image: url(../../../src/assets/image/bangumi_bg1.png);
+        background-image: url(../../../public/images/bangumi_bg1.png);
         background-color: #ffee8e;
         background-position: center top;
         background-size: auto;
@@ -155,7 +155,7 @@ let bangumiData = bangumi_data;
     #mask-wave{
         height: 50px;
         top:57px;
-        mask-image: url(../../../src/assets/image/mask_wave_top.png);
+        mask-image: url(../../../public/images/mask_wave_top.png);
         background-color: #ffee8e;
     }
 

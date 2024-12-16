@@ -13,7 +13,7 @@ export function getFilenamesInDirectory(directoryPath:string) {
 }
 
 export function gatImagesPath(bangumi_name:string):bangumiImages {
-      let directory = getFilenamesInDirectory('./src/assets/image/' + bangumi_name);
+      let directory = getFilenamesInDirectory('./public/images/' + bangumi_name);
       let images:bangumiImages = {array: []};
         directory.forEach((file) => {
             if (file.includes('logo')) {

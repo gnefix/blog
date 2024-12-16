@@ -1,6 +1,7 @@
 ---
 
 import MainLayout from "../layouts/MainLayout.astro";
+import mypng from "../../public/images/mypng.png"
 ---
 
 <html lang="cn">
@@ -17,7 +18,7 @@ import MainLayout from "../layouts/MainLayout.astro";
             <div class="shrink-0">
                 <div class="avatar">
                     <div class="w-64 rounded">
-                        <img src="../../public/images/mypng.png" />
+                        <img src={mypng.src} />
                     </div>
                 </div>
             </div>
