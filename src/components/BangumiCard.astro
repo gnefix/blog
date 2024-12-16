@@ -1,18 +1,32 @@
 ---
-import {getFilenamesInDirectory} from '../assets/js/utils'
+import {gatImagesPath, getFilenamesInDirectory} from '../../public/js/utils'
 import {Star} from "@icon-park/svg"
-import {type Bangumi} from '../assets/data/bangumi_data.ts'
+import { Image } from 'astro:assets';
+import {type Bangumi} from '../../public/data/bangumi_data.ts'
 
 
 let {bangumiData} = Astro.props
-let imagesPath  = './src/assets/image/' + bangumiData.name
-let image_files = getFilenamesInDirectory(imagesPath)
+let imagesPath  = './public/images/' + bangumiData.name
 
-let cardImage
-for (let imageFile of image_files) {
-    if (!imageFile.includes("logo")) {
-        cardImage = imageFile
-        break
+let image_files:Function[] = []
+let bangumiImages = gatImagesPath(bangumiData.name);
+const images = await import.meta.glob('/public/images/*/*.{jpeg,jpg,png,gif,svg}')
+Object.entries(images).map(([filename, image]) => {
+    if (filename.includes("/public/images/" + bangumiData.name + "/")) {
+        image_files.push(image)
+    }
+})
+
+let this_images:{logo?:Function,main?:Function,array:Function[]} = {
+    array:[]
+}
+for (let x of image_files) {
+    if (x.toString().includes("logo")) {
+        this_images.logo = x
+    } else if (x.toString().includes("main")) {
+        this_images.main = x
+    } else {
+        this_images.array.push(x)
     }
 }
 
@@ -44,7 +58,7 @@ function get_badge_and_color(status:number){
 }
 ---
 
-<a  href={'/bangumi/'+bangumiData.name}  style="transition-duration:500ms"
+<a  href={'/bangumi/'+bangumiData.name} data-astro-reload  style="transition-duration:500ms"
     class="mt-0 pt-0 p-6 bangumi_card rounded-sm m-3 card-hover min-w-88 max-h-max md:w-2/3 card md:m-10">
     <div >
 
@@ -54,7 +68,7 @@ function get_badge_and_color(status:number){
         </div>
     </div>
     <figure :class="{'skeleton': isLoading, 'rounded-sm': true}" style="object-fit:cover;width: 100%;height: 100%">
-        <img @load="loadend" style="object-fit:cover;height: inherit" src={cardImage} alt={bangumiData.name} />
+        <Image @load="loadend" style="object-fit:cover;height: inherit" src={this_images!.array[0]!()} alt={bangumiData.name} />
     </figure>
 </a>
 
@@ -85,7 +99,7 @@ function get_badge_and_color(status:number){
         padding: var(--padding-card, 1rem);
     }
     .bangumi_card{
-        border-image-source: url(../../src/assets/image/bangumi_border.png);
+        border-image-source: url(../../public/images/bangumi_border.png);
         border-image-slice: 80 80 fill;
         border-image-width: 52px 50px;
         border-image-repeat: repeat;
