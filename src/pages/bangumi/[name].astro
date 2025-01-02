@@ -5,7 +5,7 @@ import {SITE_DESCRIPTION, SITE_TITLE} from "../../consts";
 import BaseHead from "../../components/BaseHead.astro";
 import { Image } from 'astro:assets';
 import "swiper/swiper-bundle.css"
-import {gatImagesPath,getImageSize} from "../../../public/js/utils.ts";
+import {gatImagesPath,getImageSize} from "../../../public/js/utils";
 
 export function getStaticPaths() {
     let data = []
@@ -20,7 +20,7 @@ let bangumi_info = bangumi_data.find((item) => item.name === name) as Bangumi
 let imagesPath = './public/images/' + bangumi_info.name
 let image_files:Function[] = []
 let bangumiImages = gatImagesPath(name);
-const images = await import.meta.glob('/public/images/*/*.{jpeg,jpg,png,gif,svg}')
+const images = import.meta.glob(`/public/images/*/*.{jpeg,jpg,png,gif,svg}`)
 Object.entries(images).map(([filename, image]) => {
     if (filename.includes("/public/images/" + bangumi_info.name + "/")) {
         image_files.push(image)
@@ -148,7 +148,7 @@ let showMode =  imageSize.height! > imageSize.width! ? 1 : 0
             },
         }
         const swiper = new Swiper('#swiper1', swiperConfig)
-
+/*
         let script
         class AstroGreet extends HTMLElement {
             constructor() {
@@ -159,15 +159,18 @@ let showMode =  imageSize.height! > imageSize.width! ? 1 : 0
                 })
             }
         }
-        customElements.define('astro-greet', AstroGreet);
+        customElements.define('astro-greet', AstroGreet);*/
     </script>
 </head>
 <body class="bg-cover">
 <main id="main" data-theme="wireframe" class=" w-full bg-white bg-opacity-30 ">
+
     <astro-greet data-bangumi_info={JSON.stringify(bangumi_info)}>
     </astro-greet>
     <astro-greet data-script={bangumi_info?.script}>
     </astro-greet>
+    <script src={bangumi_info?.script} is:inline type="module">
+    </script>
     { showMode===0?
        ( <div class="md:min-h-full w-full justify-center items-center flex-col flex ">
             <div class="w-full  md:min-h-screen max-h-screen object-cover">
